@@ -1,0 +1,368 @@
+%
+%% This is LaTeX2e input.
+%%
+
+%% The following tells LaTeX that we are using the 
+%% style file amsart.cls (That is the AMS article style
+%%
+%%\documentclass{amsart}
+
+\documentclass[reqno]{amsart}
+%%\documentclass[12pt]{amsart}
+
+%% This has a default type size 10pt.  Other options are 11pt and 12pt
+%% This are set by replacing the command above by
+%% \documentclass[11pt]{amsart}
+%%
+%% or
+%%
+%% \documentclass[12pt]{amsart}
+%%
+
+%%
+%% Some mathematical symbols are not included in the basic LaTeX
+%% package.  Uncommenting the following makes more commands
+%% available. 
+%%
+
+\usepackage{amssymb}
+\usepackage{mathtools}
+%\usepackage{amsmath}
+
+
+%%
+%% The following is commands are used for importing various types of
+%% grapics.
+%% 
+
+%\usepackage{epsfig}  		% For postscript
+%\usepackage{epic,eepic}       % For epic and eepic output from xfig
+
+%%
+%% The following is very useful in keeping track of labels while
+%% writing.  The variant   \usepackage[notcite]{showkeys}
+%% does not show the labels on the \cite commands.
+%% 
+
+%\usepackageshowkeys}
+
+
+%%%%
+%%%% The next few commands set up the theorem type environments.
+%%%% Here they are set up to be numbered section.number, but this can
+%%%% be changed.
+%%%%
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{cor}[thm]{Corollary}
+
+
+%%
+%% If some other type is need, say conjectures, then it is constructed
+%% by editing and uncommenting the following.
+%%
+
+%\newtheorem{conj}[thm]{Conjecture} 
+
+
+%%% 
+%%% The following gives definition type environments (which only differ
+%%% from theorem type invironmants in the choices of fonts).  The
+%%% numbering is still tied to the theorem counter.
+%%% 
+
+\theoremstyle{definition}
+\newtheorem{definition}[thm]{Definition}
+\newtheorem{example}[thm]{Example}
+
+%%
+%% Again more of these can be added by uncommenting and editing the
+%% following. 
+%%
+
+%\newtheorem{note}[thm]{Note}
+
+
+%%% 
+%%% The following gives remark type environments (which only differ
+%%% from theorem type invironmants in the choices of fonts).  The
+%%% numbering is still tied to the theorem counter.
+%%% 
+
+
+\theoremstyle{remark}
+
+\newtheorem{remark}[thm]{Remark}
+
+
+%%%
+%%% The following, if uncommented, numbers equations within sections.
+%%% 
+
+%%\numberwithin{equation}{section}
+
+
+%%%
+%%% The following show how to make definition (also called macros or
+%%% abbreviations).  For example to use get a bold face R for use to
+%%% name the real numbers the command is \mathbf{R}.  To save typing we
+%%% can abbreviate as
+
+\newcommand{\R}{\mathbf{R}}  % The real numbers.
+
+%%
+%% The comment after the defintion is not required, but if you are
+%% working with someone they will likely thank you for explaining your
+%% definition.  
+%%
+%% Now add you own definitions:
+%%
+
+%%%
+%%% Mathematical operators (things like sin and cos which are used as
+%%% functions and have slightly different spacing when typeset than
+%%% variables are defined as follows:
+%%%
+
+\DeclareMathOperator{\dist}{dist} % The distance.
+
+
+
+%%
+%% This is the end of the preamble.
+%% 
+
+
+\begin{document}
+
+%%
+%% The title of the paper goes here.  Edit to your title.
+%%
+
+\title{Pseudo-polynomial Time Solution of a Subset-Sum Problem Using a Sinusoidal Basis  }
+
+%%
+%% Now edit the following to give your name and address:
+%% 
+\author{J. Keith Kenemer}
+%\author{J. Keith Kenemer\\ HyperLogic Technologies, Atlanta, GA}
+%\author{J. Keith Kenemer\\ H\lowercase{yper}L\lowercase{ogic} T\lowercase{echnologies}, A\lowercase{tlanta}, GA}
+%\affiliation{HyperLogic Technologies}
+%\address{HyperLogic Technologies, Atlanta, GA 30092}
+%\email{kkenemer@hyperlogic.com}
+%\urladdr{www.hyperlogic.com/$\sim$kenemer} % Delete if not wanted.
+
+
+%%
+%% If there is another author uncomment and edit the following.
+%%
+
+%\author{Second Author}
+%\address{Department of Mathematics, University of South Carolina,
+%Columbia, SC 29208}
+%\email{second@math.sc.edu}
+%\urladdr{www.math.sc.edu/$\sim$second}
+
+%%
+%% If there are three of more authors they are added in the obvious
+%% way. 
+%%
+
+%%%
+%%% The following is for the abstract.  The abstract is optional and
+%%% if not used just delete, or comment out, the following.
+%%%
+
+\begin{abstract}
+The subset-sum problem is an NP-complete problem with no known polynomial-time solution. A method for solving a variant of
+this problem is presented which uses a sinusoidal basis to encode integers. The advantage of using a basis to encode numbers is that 
+multiple numbers and computational results can be held in superposition, allowing an exponential number of candidate solutions to
+be explored simultaneously. A current limitation of this approach is that the precision of an encoded number is limited by the 
+computational resources required to represent the basis functions and superpositions and this limitation results in pseudo-polynomial 
+complexity.    
+\end{abstract}
+
+%%
+%%  LaTeX will not make the title for the paper unless told to do so.
+%%  This is done by uncommenting the following.
+%%
+
+ \maketitle
+
+%%
+%% LaTeX can automatically make a table of contents.  This is done by
+%% uncommenting the following:
+%%
+
+%\tableofcontents
+
+%%
+%%  To enter text is easy.  Just type it.  A blank line starts a new
+%%  paragraph. 
+%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\noindent
+The proposed method is inspired by quantum computing and other waveform-based logic approaches such as Sinusoidal Logic and Noise-Based Logic (NBL). Computation using basis functions can be viewed as an exploration of the boundary between classical, analog, and quantum computation. In Sinusoidal and Noise-Based Logic, each bit is encoded as a basis function which is used to construct numbers in the waveform basis. In the proposed method, numbers are directly encoded as the frequency of a complex sinusoid. The disadvantage of this approach is a limitation of precision which is achievable due to the computational resources required for the representation. The advantage is that arithmetic operations, such as addition, are easier to compute in the waveform basis. Although other pseudo-polynomial time algorithms exist for this class of problems (e.g. dynamic programming), the use of basis functions to encode and process candidate solutions may provide an interesting new way to approach some optimization problems.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Subset Sum Problem With Repetition (SRP) }
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+In the subset-sum problem (SSP), we are given a set of $N$ integers and asked whether there is a subset which sums to a given target value. There are $2^N$ subsets to consider. A variant of this problem allows for repetition of the values chosen for the subsets. Here we will consider an SRP instance where the maximum number of repetitions is fixed but can be allocated across values in the subset. In other words, each possible subset is constructed by making k independent selections ( $ 1 \leq k \leq N$) with replacement from the given set. Subsets of size 1 to N can be chosen and elements can be repeated up to N times. This problem contains SSP within it and so is also NP-complete. The problem can be stated as follows:
+
+\newpage
+\noindent
+\newline
+Given a set $A= \left \{a_1,a_2,...,a_N\right \}$ of N non-zero elements, are there integers $r_i$ in the range $ 0 \leq r_i \leq N$  which satisfy $ \sum_{i}^{N} r_i \leq N  $ such that $ \sum_{i=1}^{N} a_ir_i = T$ ?  This problem can also be interpreted as attempting to find a vector $R$ with elements $r_i$ such that the inner product exactly matches the target value: $\left \langle A, R\right \rangle = T$ subject to a constraint on the $L_1$-norm of R and the range of elements in R.
+
+\noindent
+\newline
+This problem can be encoded into a  complex sinusoidal superposition using the following method.
+We will encode numbers as the frequency of a complex sinusoid, which represents the number of cycles per unit time. The corresponding complex sinusoid for element $a_k$ is therefore $ \Phi _k = e^{ i \omega _k n }  $, where $\omega _k = \frac{2\pi a_k}{L} $, $n$ is the time index (sample number) and $L$ is the number of samples used to represent a unit of time.
+We need to potentially encode numbers with magnitude ranging from 1 to $ M =N \cdot max  \left \{   \left | a_i  \right | \right \}$, which is the maximum possible sum magnitude. In order to satisfy the Nyquist sampling rate, we require at least 2 samples/cycle and so $L = 2M$. We can encode the set of all possible subset-sum choices in the following superposition:
+
+\begin{equation}
+\Psi (n) =\sum_{k=1}^{N}e^{i\omega _k n} \left (1+ \sum_{m=1}^{N}e^{i\omega _m n} \right )^{N-1}
+\end{equation}
+
+
+\noindent
+\newline
+The first product-term represents the fact that at least one choice $a_k$ from set A must be made. The second (exponentiated) product-term represents the freedom of the remaining $N-1$ choices to be either a 'real' choice $a_m$ from A, or a 'non-choice' of 0, which translates to $ e^0 = 1 $ allowing subsets of various sizes to be created. The multiplication/modulation of these terms generates sinusoids whose frequencies represent all the possible sums for all of the possible subset choices and these candidate solutions all coexist simultaneously in the output superposition. We can obtain a Yes/No answer to the SRP statement by checking for the presence of the sinusoid associated with the target value T by checking to see if the following inner product is non-zero:
+
+\begin{equation}
+\varphi  =  \left \langle \Psi (n), e^{  \frac{2\pi i T}{L} n }\right \rangle  
+\end{equation}
+
+If the inner product is zero (or effectively zero relative to the working precision of the computation), then there is no solution. If the inner product is non-zero, then a solution exists. This inner product can be thought of as an oracle function--a function which provides guidance on how to reduce the search space for finding a solution by indicating when a solution is present. There are many variations on how a solution can be found but they would have the same general structure for iterating. Compute the oracle function $\varphi  =  \left \langle \Psi, \Phi _T\right \rangle $. Then iteratively restrict the search space and recompute the oracle function until a solution is found. This is described in more detail in the following section.
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Search Algorithm}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+If we allow the possibility of an empty subset in the search space (which is legitimate), we can re-write Eq (1) as follows:
+
+\begin{equation}
+\Psi (n) = \left (\sum_{k=0}^{N}e^{i\omega _k n} \right )^{N} = \coprod_{m=1}^{N} \left (  \sum_{k=0}^{N} e^{i \omega _k n}  \right ) _m
+\end{equation}
+
+Here we have absorbed the non-choice into the set of possibilities by starting the indexing at 0. The degree of freedom we have in reducing the search space is to limit the index range in each summation. Since we have an oracle function which indicates when a solution is present in the superposition, we can perform a binary search of the index limits, ultimately resulting in a single frequency for each factor. This result describes which elements of A are contained within a satisfying subset, along with the number of occurrences which effectively gives the desired R vector. For example, the search process may conclude with $\Psi$ in the state:
+
+\begin{equation}
+\Psi (n) = \left (e^{i\omega _1 n} \right ) \left (e^{i\omega _1 n} \right ) \left (e^{i\omega _3 n} \right ) \left (e^{i\omega _5 n} \right )
+\end{equation}
+
+\noindent
+which indicates that $A'= \left\{a_1, a_3, a_5 \right\}$ is a satisfying subset with $R = \left\{2,0,1,0,1,0,0,0,...\right\}$. 
+%In other words, $2*a_1 + a_3 + a_5 = T $ . If we have a hypothetical subroutine called SEARCH_ITERATION() which computes and the oracle function  
+%$\left \langle  \Psi, \Phi _T  \right \rangle $
+In other words, $2*a_1 + a_3 + a_5 = T $. If we have a hypothetical subroutine called $search()$ which computes $\Psi$ and the oracle function
+$\left \langle  \Psi, \Phi _T  \right \rangle $, then the entire search process can be completed using $N\cdot log(N)$ calls to $search()$.
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Computational Complexity}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+The complexity will be estimated by counting the number of complex-valued operations, assuming all operations are approximately the same with respect to performance (as may be the cause for a native GPU implementation). For each sample $n$, The first product-term in Equation (1)requires $N$ complex exponentiations and $N-1$ complex additions. The second product term can re-use the sum-of-exponentials result from the first term, so it only requires one additional addition operation per sample (L operations). To complete the superposition requires the exponentiation of the second term (L operations) and then a multiplication of the two product terms (L operations). Therefore, construction of the superposition in Equation (1) requires $N_1 = (2N-1)\cdot L + 3L$ complex-valued operations. Calculating the inner product from Equation (2) requires $L$ complex multiplications and $L-1$ complex additions for a total of $N_p = 2L - 1$ operations. The total number of complex-valued operations required to construct the initial superposition and compute the inner product against the target sinusoid represents the number of operations required for a Yes/No decision of satisifiability:
+
+\begin{equation}
+N_i = (2N-1)L + 3L + (2L - 1) = 2NL + 4L -1 =O(N \cdot L)
+\end{equation}
+
+The $seach()$ routine requires independent control of each factor, however the overall product can be updated one factor at a time (see Eq 3). There are $N$ complex exponentiations and $N$ complex additions for each factor. This updated factor must be integrated into the overall product by a point-wise (sample-by-sample) multiplication which requires L complex multiplications. The factor representing the unrestricted choices must be modified by updating the exponent for each sample (L operations) and integrating this into the overall result by performing point-wise multiplication (L operations). Therefore the superposition update requires $ 2NL + 3L$ operations. The oracle function inner product requires an additional $2L-1$ operations. The complexity of $search()$ is therefore:
+
+\begin{equation}
+N_s = 2NL + 5L - 1 = O(N \cdot L)
+\end{equation}
+
+\noindent
+In section 3, we observed that the entire search process can be completed in $N\cdot log(N)$ calls to $search()$. Therefore the total number of operations for entire search process, i.e the solution of the problem in on the order of:
+
+\begin{equation}
+N_T= O( L \cdot N \cdot N \cdot log(N) ) = O( L \cdot N^2 \cdot log(N) )
+\end{equation}
+\noindent
+The complexity is polynomial in $N$, the number of set elements and $L$, the number of samples used to represent the basis functions. However, $L = 2M$ and so depends on the maximum sum magnitude $M$, and this makes it dependent on the size of the input elements in set A. The input values are exponential in the number of bits, and so the overall search algorithm has pseudo-polynomial complexity.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Summary}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+A new method for solving a subset-sum problem variant in pseudo-polynomial time was presented which was inspired by quantum computing and other waveform-based logic schemes. The interesting aspect of the approach is mainly in how it solves the optimization problem, by holding all possible solutions in superposition, which allows a systematic reduction of the search space. This method also relies heavily on vector operations such as inner product, which can easily be performed in parallel. This type of approach may find applications for optimization problems where a minimum set of assumptions can be made for the input space and a high degree of parallelism is desired.
+
+
+
+%%
+%%  To put mathematics in a line it is put between dollor signs.  That
+%%  is $(x+y)^2=x^2+2xy+y^2$
+%%
+
+%Anyone caught using formulas such as $\sqrt{x+y}=\sqrt{x}+\sqrt{y}$ 
+%or $\frac{1}{x+y}=\frac{1}{x}+\frac{1}{y}$ will fail.
+
+%%
+%%% Displayed mathematics is put between double dollar signs.  
+%%
+
+%The binomial theorem is
+%$$
+%(x+y)^n=\sum_{k=0}^n\binom{n}{k}x^ky^{n-k}.
+%$$
+%A favorite sum of most mathematicians is
+%$$
+%\sum_{n=1}^\infty \frac{1}{n^2}=\frac{\pi^2}{6}.
+%$$
+%Likewise a popular integral is
+%$$
+%\int_{-\infty}^\infty e^{-x^2}\,dx=\sqrt{\pi}
+%$$
+
+
+%%
+%% A Theorem is stated by
+%%
+
+%\begin{thm} The square of any real number is non-negative.
+%\end{thm}
+
+%%
+%% Its proof is set off by
+%% 
+
+%\begin{proof}
+%Any real number $x$ satisfies $x>0$, $x=0$, or $x<0$.
+%If $x=0$, then $x^2=0\ge 0$.  If $x>0$ then as a positive time a
+%positive is positive we have $x^2=xx>0$.  If $x<0$ then $-x>0$ and so
+%by what we have just done $x^2=(-x)^2>0$.  So in all cases $x^2\ge0$.
+%\end{proof}
+
+
+%%
+%% A new section is started as follows:
+%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section{Introduction}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%This is a new section.
+
+%%
+%% A subsection is started by
+%%
+
+%\subsection{Things that need to be done.}
+%Prove theorems.
+
+
+
+\end{document}
+

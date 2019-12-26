@@ -1,0 +1,356 @@
+%
+%% This is LaTeX2e input.
+%%
+
+%% The following tells LaTeX that we are using the 
+%% style file amsart.cls (That is the AMS article style
+%%
+%%\documentclass{amsart}
+\documentclass[reqno]{amsart}
+
+%% This has a default type size 10pt.  Other options are 11pt and 12pt
+%% This are set by replacing the command above by
+%% \documentclass[11pt]{amsart}
+%%
+%% or
+%%
+%% \documentclass[12pt]{amsart}
+%%
+
+%%
+%% Some mathematical symbols are not included in the basic LaTeX
+%% package.  Uncommenting the following makes more commands
+%% available. 
+%%
+
+\usepackage{amssymb}
+\usepackage{mathtools}
+%\usepackage{amsmath}
+
+
+%%
+%% The following is commands are used for importing various types of
+%% grapics.
+%% 
+
+%\usepackage{epsfig}  		% For postscript
+%\usepackage{epic,eepic}       % For epic and eepic output from xfig
+
+%%
+%% The following is very useful in keeping track of labels while
+%% writing.  The variant   \usepackage[notcite]{showkeys}
+%% does not show the labels on the \cite commands.
+%% 
+
+%\usepackageshowkeys}
+
+
+%%%%
+%%%% The next few commands set up the theorem type environments.
+%%%% Here they are set up to be numbered section.number, but this can
+%%%% be changed.
+%%%%
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{cor}[thm]{Corollary}
+
+
+%%
+%% If some other type is need, say conjectures, then it is constructed
+%% by editing and uncommenting the following.
+%%
+
+%\newtheorem{conj}[thm]{Conjecture} 
+
+
+%%% 
+%%% The following gives definition type environments (which only differ
+%%% from theorem type invironmants in the choices of fonts).  The
+%%% numbering is still tied to the theorem counter.
+%%% 
+
+\theoremstyle{definition}
+\newtheorem{definition}[thm]{Definition}
+\newtheorem{example}[thm]{Example}
+
+%%
+%% Again more of these can be added by uncommenting and editing the
+%% following. 
+%%
+
+%\newtheorem{note}[thm]{Note}
+
+
+%%% 
+%%% The following gives remark type environments (which only differ
+%%% from theorem type invironmants in the choices of fonts).  The
+%%% numbering is still tied to the theorem counter.
+%%% 
+
+
+\theoremstyle{remark}
+
+\newtheorem{remark}[thm]{Remark}
+
+
+%%%
+%%% The following, if uncommented, numbers equations within sections.
+%%% 
+
+%%\numberwithin{equation}{section}
+
+
+%%%
+%%% The following show how to make definition (also called macros or
+%%% abbreviations).  For example to use get a bold face R for use to
+%%% name the real numbers the command is \mathbf{R}.  To save typing we
+%%% can abbreviate as
+
+\newcommand{\R}{\mathbf{R}}  % The real numbers.
+
+%%
+%% The comment after the defintion is not required, but if you are
+%% working with someone they will likely thank you for explaining your
+%% definition.  
+%%
+%% Now add you own definitions:
+%%
+
+%%%
+%%% Mathematical operators (things like sin and cos which are used as
+%%% functions and have slightly different spacing when typeset than
+%%% variables are defined as follows:
+%%%
+
+\DeclareMathOperator{\dist}{dist} % The distance.
+
+
+
+%%
+%% This is the end of the preamble.
+%% 
+
+
+\begin{document}
+
+%%
+%% The title of the paper goes here.  Edit to your title.
+%%
+
+\title{Efficient Boolean Satisfiability Using A Modified Noise-Based Logic Approach }
+
+%%
+%% Now edit the following to give your name and address:
+%% 
+\author{J. Keith Kenemer}
+%\author{J. Keith Kenemer\\ HyperLogic Technologies, Atlanta, GA}
+%\author{J. Keith Kenemer\\ H\lowercase{yper}L\lowercase{ogic} T\lowercase{echnologies}, A\lowercase{tlanta}, GA}
+%\affiliation{HyperLogic Technologies}
+%\address{HyperLogic Technologies, Atlanta, GA 30092}
+%\email{kkenemer@hyperlogic.com}
+%\urladdr{www.hyperlogic.com/$\sim$kenemer} % Delete if not wanted.
+
+
+%%
+%% If there is another author uncomment and edit the following.
+%%
+
+%\author{Second Author}
+%\address{Department of Mathematics, University of South Carolina,
+%Columbia, SC 29208}
+%\email{second@math.sc.edu}
+%\urladdr{www.math.sc.edu/$\sim$second}
+
+%%
+%% If there are three of more authors they are added in the obvious
+%% way. 
+%%
+
+%%%
+%%% The following is for the abstract.  The abstract is optional and
+%%% if not used just delete, or comment out, the following.
+%%%
+
+\begin{abstract}
+A novel method for SAT-solving is presented which uses sets of orthogonal and non-orthogonal binary sequences to encode Boolean variables. SAT statements are encoded into arithmetic operations on sequences--each logic clause is encoded into waveforms which are multiplied (AND-ed) together to encode a the logic statement in conjunctive normal form (CNF).  The binary sequences are designed to detect when logic conflict conditions occur for each variable and force the output to zero for each term where this occurs by utilizing orthogonality. Satisfiability can be determined based on whether the output sequence is non-zero (SAT) or zero (UNSAT) over all samples. Encoding the logic statement into a discrete waveform eliminates the need for an explicit expansion of the statement while still producing a discernable result. The SAT solutions can be found in polynomial time and space complexity using this method.
+
+\end{abstract}
+
+%%
+%%  LaTeX will not make the title for the paper unless told to do so.
+%%  This is done by uncommenting the following.
+%%
+
+ \maketitle
+
+%%
+%% LaTeX can automatically make a table of contents.  This is done by
+%% uncommenting the following:
+%%
+
+%\tableofcontents
+
+%%
+%%  To enter text is easy.  Just type it.  A blank line starts a new
+%%  paragraph. 
+%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\noindent
+The proposed method was inspired by waveform-based logic approaches including Noise-based Logic (NBL), Sinusoidal Logic, and also quantum computing. The new method has an important difference, which is that no attempt is made to encode all possible logic minterms into unique basis functions. In NBL-SAT, unique basis functions can be constructed for each minterm, but this requires long correlation times when solving a high-dimensional problem. Sinusoidal Logic is limited by the number of basis functions available and so suffers from basis degeneracy. The proposed method does not suffer from these limitations since the orthogonal binary sequences are used only to detect logic conflicts and force the corresponding output to zero in these cases, and so the constraints on the associated sequences are manageable
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Boolean Satisfiability(SAT)}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Given a logic statement in conjunctive normal form (CNF), the objective of SAT to to determine if there is an assignment of the boolean variables which satisifies the statement(i.e. makes it evaulate to TRUE). SAT is an NP-complete problem with no known polynomial time solution.  
+\newline
+\noindent
+Consider the following statement:
+
+\begin{equation}
+y = (x_1\vee \overline{x_2})\wedge (\overline{x_1}\vee \overline{x_2})\wedge x_2
+\end{equation}
+\newline
+\noindent
+which is not satisfiable.  If we expand the expression, we notice each term in the expansion contains a logical conflict--variables AND-ed with their negation. If all terms in the expansion have such conflicts, the overall statement will not be satisfiable.
+
+\begin{equation}
+y = (x_1\wedge\overline{x_1}\wedge x_2) \vee (x_1 \wedge \overline{x_2} \wedge x_2) \vee (x_1\wedge x_2\wedge \overline{x_2} ) \vee (\overline{x_2}\wedge \overline{x_2}\wedge x_2)
+\end{equation}
+\newline
+\noindent
+If we replace $x_2$ in the last clause with $x_3$, the statement then becomes satisfiable, as new terms are created in the expansion which are free of logical conflict.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Encoding of Variables}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\noindent
+Each boolean variable $x_i$ and its negation $\overline{x_i}$ are encoded using discrete pseudo-random binary 
+sequences $X_i(n)$ and $\overline{X_i}(n)$ of length L samples which obey the following
+rules: \newline\newline
+(1) $X_i(n) \epsilon\left \{ 0,1 \right \}, p=\frac{1}{2}$ at each sample n (random binary sequence) \newline
+(2) $\overline{X_i}(n) =  1-X_i(n)$  for each sample n (point-wise orthogonal) \newline
+\newline
+\noindent
+This encoding effectively forces any term of the form $X_i(n) \cdot \overline{X_i}(n)$ to be zero, regardless
+of whatever else it is multiplied with. Terms of the form $X_i(n) \cdot X_j(n), i \neq j$ and 
+$X_i(n) \cdot \overline{X_j}(n), i \neq j$ provide non-zero contribution to any product term they are contained within.
+As seen in later sections, this encoding will allow us to detect when all terms in the expansion have a conflict since this will result in an output sequence consisting entirely of zeros. Encoding the logic expression into a waveform eliminates the need for explicit 
+expansion of the statement but still produces a discernable result.
+\newline
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Encoding of Logic Statements}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\noindent
+Propositional logic sentences will be transformed into arithmetic expressions involving the discrete sequences
+described in the previous section. The following table describes the encoding:
+
+\begin{table}[h]
+\centering
+\def\arraystretch{1.2}
+\begin{tabular}{|l|c|}
+\hline
+Logic Variable/Operator & Arithmetic Variable/Operator \\
+\hline
+$x_i$ & $X_i(n)$ \\
+\hline
+$\overline{x}_i$ & $\overline{X}_i(n)$ \\
+\hline
+$\vee $ (OR) & $+$ (addition) \\
+\hline
+$\wedge $ (AND) & $\cdot$ (multiplication) \\
+\hline
+\end{tabular}
+\caption{Encoding of Logic Statements}
+\label{tab:template}
+\end{table}
+
+\noindent
+This encoding of variables and operators will produce all 0's over the entire output sequence 
+for UNSAT statements. The output for SAT statements will result in at least 1 non-zero value 
+in the output sequence.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Summary}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+TO DO
+
+
+
+%%
+%%  To put mathematics in a line it is put between dollor signs.  That
+%%  is $(x+y)^2=x^2+2xy+y^2$
+%%
+
+%Anyone caught using formulas such as $\sqrt{x+y}=\sqrt{x}+\sqrt{y}$ 
+%or $\frac{1}{x+y}=\frac{1}{x}+\frac{1}{y}$ will fail.
+
+%%
+%%% Displayed mathematics is put between double dollar signs.  
+%%
+
+%The binomial theorem is
+%$$
+%(x+y)^n=\sum_{k=0}^n\binom{n}{k}x^ky^{n-k}.
+%$$
+%A favorite sum of most mathematicians is
+%$$
+%\sum_{n=1}^\infty \frac{1}{n^2}=\frac{\pi^2}{6}.
+%$$
+%Likewise a popular integral is
+%$$
+%\int_{-\infty}^\infty e^{-x^2}\,dx=\sqrt{\pi}
+%$$
+
+
+%%
+%% A Theorem is stated by
+%%
+
+%\begin{thm} The square of any real number is non-negative.
+%\end{thm}
+
+%%
+%% Its proof is set off by
+%% 
+
+%\begin{proof}
+%Any real number $x$ satisfies $x>0$, $x=0$, or $x<0$.
+%If $x=0$, then $x^2=0\ge 0$.  If $x>0$ then as a positive time a
+%positive is positive we have $x^2=xx>0$.  If $x<0$ then $-x>0$ and so
+%by what we have just done $x^2=(-x)^2>0$.  So in all cases $x^2\ge0$.
+%\end{proof}
+
+
+%%
+%% A new section is started as follows:
+%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section{Introduction}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%This is a new section.
+
+%%
+%% A subsection is started by
+%%
+
+%\subsection{Things that need to be done.}
+%Prove theorems.
+
+
+
+\end{document}
+

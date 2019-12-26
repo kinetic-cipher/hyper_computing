@@ -1,0 +1,561 @@
+%
+%% This is LaTeX2e input.
+%%
+
+%% The following tells LaTeX that we are using the 
+%% style file amsart.cls (That is the AMS article style
+%%
+%%\documentclass{amsart}
+\documentclass[reqno]{amsart}
+
+%% This has a default type size 10pt.  Other options are 11pt and 12pt
+%% This are set by replacing the command above by
+%% \documentclass[11pt]{amsart}
+%%
+%% or
+%%
+%% \documentclass[12pt]{amsart}
+%%
+
+%%
+%% Some mathematical symbols are not included in the basic LaTeX
+%% package.  Uncommenting the following makes more commands
+%% available. 
+%%
+
+\usepackage{amssymb}
+\usepackage{mathtools}
+%\usepackage{amsmath}
+
+
+%%
+%% The following is commands are used for importing various types of
+%% grapics.
+%% 
+
+%\usepackage{epsfig}  		% For postscript
+%\usepackage{epic,eepic}       % For epic and eepic output from xfig
+
+%%
+%% The following is very useful in keeping track of labels while
+%% writing.  The variant   \usepackage[notcite]{showkeys}
+%% does not show the labels on the \cite commands.
+%% 
+
+%\usepackageshowkeys}
+
+
+%%%%
+%%%% The next few commands set up the theorem type environments.
+%%%% Here they are set up to be numbered section.number, but this can
+%%%% be changed.
+%%%%
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{cor}[thm]{Corollary}
+
+
+%%
+%% If some other type is need, say conjectures, then it is constructed
+%% by editing and uncommenting the following.
+%%
+
+%\newtheorem{conj}[thm]{Conjecture} 
+
+
+%%% 
+%%% The following gives definition type environments (which only differ
+%%% from theorem type invironmants in the choices of fonts).  The
+%%% numbering is still tied to the theorem counter.
+%%% 
+
+\theoremstyle{definition}
+\newtheorem{definition}[thm]{Definition}
+\newtheorem{example}[thm]{Example}
+
+%%
+%% Again more of these can be added by uncommenting and editing the
+%% following. 
+%%
+
+%\newtheorem{note}[thm]{Note}
+
+
+%%% 
+%%% The following gives remark type environments (which only differ
+%%% from theorem type invironmants in the choices of fonts).  The
+%%% numbering is still tied to the theorem counter.
+%%% 
+
+
+\theoremstyle{remark}
+
+\newtheorem{remark}[thm]{Remark}
+
+
+%%%
+%%% The following, if uncommented, numbers equations within sections.
+%%% 
+
+%%\numberwithin{equation}{section}
+
+
+%%%
+%%% The following show how to make definition (also called macros or
+%%% abbreviations).  For example to use get a bold face R for use to
+%%% name the real numbers the command is \mathbf{R}.  To save typing we
+%%% can abbreviate as
+
+\newcommand{\R}{\mathbf{R}}  % The real numbers.
+
+%%
+%% The comment after the defintion is not required, but if you are
+%% working with someone they will likely thank you for explaining your
+%% definition.  
+%%
+%% Now add you own definitions:
+%%
+
+%%%
+%%% Mathematical operators (things like sin and cos which are used as
+%%% functions and have slightly different spacing when typeset than
+%%% variables are defined as follows:
+%%%
+
+\DeclareMathOperator{\dist}{dist} % The distance.
+
+
+
+%%
+%% This is the end of the preamble.
+%% 
+
+
+\begin{document}
+
+%%
+%% The title of the paper goes here.  Edit to your title.
+%%
+
+\title{Efficient Quantum Simulation Using a Recursion}
+
+%%
+%% Now edit the following to give your name and address:
+%% 
+\author{J. Keith Kenemer}
+%\author{J. Keith Kenemer\\ HyperLogic Technologies, Atlanta, GA}
+%\author{J. Keith Kenemer\\ H\lowercase{yper}L\lowercase{ogic} T\lowercase{echnologies}, A\lowercase{tlanta}, GA}
+%\affiliation{HyperLogic Technologies}
+%\address{HyperLogic Technologies, Atlanta, GA 30092}
+%\email{kkenemer@hyperlogic.com}
+%\urladdr{www.hyperlogic.com/$\sim$kenemer} % Delete if not wanted.
+
+
+%%
+%% If there is another author uncomment and edit the following.
+%%
+
+%\author{Second Author}
+%\address{Department of Mathematics, University of South Carolina,
+%Columbia, SC 29208}
+%\email{second@math.sc.edu}
+%\urladdr{www.math.sc.edu/$\sim$second}
+
+%%
+%% If there are three of more authors they are added in the obvious
+%% way. 
+%%
+
+%%%
+%%% The following is for the abstract.  The abstract is optional and
+%%% if not used just delete, or comment out, the following.
+%%%
+
+\begin{abstract}
+Quantum computation can be viewed as a recursion if the amplitudes associated with each 
+eigenstate are written as a function of the bitfields of the eigenstate.  This recursion
+provides some insight into the boundary between classical and quantum computation and suggests 
+several scenarios for performing efficient quantum simulation.
+\end{abstract}
+
+%%
+%%  LaTeX will not make the title for the paper unless told to do so.
+%%  This is done by uncommenting the following.
+%%
+
+ \maketitle
+
+%%
+%% LaTeX can automatically make a table of contents.  This is done by
+%% uncommenting the following:
+%%
+
+%\tableofcontents
+
+%%
+%%  To enter text is easy.  Just type it.  A blank line starts a new
+%%  paragraph. 
+%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{A Universal Set of Quantum Logic Gates (Review)}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\noindent
+The Hadamard gate, phase gate, controlled-NOT gate, and $\frac{\pi}{8}$-gate
+are universal for quantum computation. The operation of these quantum logic
+gates will be briefly reviewed and used to construct a recursive interpretation
+of quantum computation.
+
+\noindent
+The Hadamard gate is defined by the following single-qubit operation
+which transforms the qubit into a superposition with a phase that depends on the state
+of the original qubit:
+
+\begin{equation}
+H=
+\frac{1}{\sqrt{2}}
+\begin{bmatrix}
+ 1 &\:\:\:1
+ \\1 &-1 
+\end{bmatrix}
+\:\:\:\:\:\:
+\mid b\:\rangle\rightarrow \frac{1}{\sqrt{2}}(\mid0\:\rangle+(-1)^b\mid1\:\rangle)
+\end{equation}
+
+\noindent
+The Phase gate is defined by the following single-qubit operation which
+generates a phase factor dependent on the original qubit state:
+\begin{equation}
+S=
+\begin{bmatrix}
+ 1 &\:0
+ \\0 &i 
+\end{bmatrix}
+\:\:\:\:\:\:
+\mid b\:\rangle\rightarrow e^{\frac{i\pi}{2}b}\mid b\:\rangle
+\end{equation}
+
+
+\noindent
+Similarly, the $\frac{\pi}{8}$-gate is defined by the single-qubit operation 
+which also generates a phase factor dependent on the original
+qubit state:
+\begin{equation}
+T=
+\begin{bmatrix}
+ 1 &\:0
+ \\0 &e^{ \frac{i\pi}{4}} 
+\end{bmatrix}
+\:\:\:\:\:\:
+\mid b\:\rangle\rightarrow e^{\frac{i\pi}{4}b}\mid b\:\rangle
+\end{equation}
+
+\noindent
+The CNOT (controlled-not) gate performs a conditional negation of the target qubit 
+based on the value of the control qubit. The operation preserves the state of the control
+qubit and replaces the target qubit with the XOR of the control and target qubits.
+\begin{equation}
+CNOT=
+\begin{bmatrix}
+  1 &0 &0 &0
+\\0 &1 &0 &0
+\\0 &0 &0 &1
+\\0 &0 &1 &0 
+\end{bmatrix}
+\:\:\:\:\:\:
+\mid ...b_c...b_t...\rangle\rightarrow \mid ...b_c...b_c\oplus b_t...\rangle
+\end{equation}
+
+\noindent
+where the bitfields $b\: \epsilon \left \{ 0,1 \right \} $ and Dirac notation is used for the basis states:
+%$|0\rangle = \begin{bmatrix} 1 \\ 0 \end{bmatrix} $ and $|1\rangle = \begin{bmatrix} 0 \\ 1 \end{bmatrix} $.
+
+\begin{equation}
+|0\rangle = \begin{bmatrix} 1 \\ 0 \end{bmatrix} \:\:\:\:  |1\rangle = \begin{bmatrix} 0 \\ 1 \end{bmatrix} 
+\end{equation}
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Quantum Computation as a Recursion}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\noindent
+%Quantum computation utilizes a high-dimensional state space created by the tensor product of qubits in superposition. Each possible
+%output state (eigenstate) has a complex-valued amplitude, giving it a phase. A quantum circuit is constructed such that the desired results %are amplified by constructive interference and the non-solutions cancel out through destructive interference, thus exhibiting the wave %aspect of the system. When the system is measured, it exhibits its particle nature and collapses onto a single eigenstate with a %probability equal to the magnitude-squared of the amplitude of the eigenstate. 
+%\newline
+%\newline
+\noindent
+The state of a quantum computation at any time is given by the wavefunction, which is represented by a linear combination of eigenstates, each weighted by the associated amplitude. Each eigenstate represents a possible output value of the computation. The state is a number, decomposable into bitfields, which means that the amplitude associated with each eigenstate is a multivariate function of the eigenstate bitfield values.
+
+\begin{equation}
+\psi=\sum_{n} \alpha_{n}|\phi_{n} \rangle =\sum_{n} \alpha(b_{N}...b_{k}...b_{0})\mid b_{N}...b_{k}...b_{0}\rangle
+\end{equation}
+
+
+\begin{equation}
+\alpha=\alpha(b_{N}, ... ,b_{k}, ...b_{0})
+\end{equation}
+
+
+\noindent
+where each index has the binary representation: $n = \sum_{i=0}^{N-1} b_{i} 2^{i}$.
+If we perform a Hadamard operation on the k-th qubit, the amplitude function will be transformed. Prior to this operation, 
+we note that the wavefunction sum can be partitioned into two components, one where the k-th qubit happens to be 0 and another where it happens to be 1. 
+Therefore the wavefunction can equivalently be written as:
+
+\begin{equation}
+\psi=\sum_{n} \alpha(b_{N-1}...0...b_{0})\mid b_{N-1}...b_{k+1}\rangle\mid0\:\rangle\mid b_{k-1}...b_{0}\rangle 
+\end{equation}
+$$
+\: + \:\:\sum_{n} \alpha(b_{N-1}...1...b_{0})\mid b_{N-1}...b_{k+1}\rangle\mid1\:\rangle\mid b_{k-1}...b_{0}\rangle
+$$
+
+\noindent
+After performing the Hadamard operation on the kth qubit, the state will be transformed to the following:
+
+\begin{equation}
+\psi_H=\sum_{n} \alpha(b_{N-1}...0...b_{0})\mid b_{N-1}...b_{k+1}\rangle\frac{|\:0\:\rangle+|\:1\:\rangle}{\sqrt{2}}\rangle\mid b_{k-1}...b_{0}\rangle 
+\end{equation}
+
+$$
+\: + \:\:\sum_{n} \alpha(b_{N-1}...1...b_{0})\mid b_{N-1}...b_{k+1}\rangle\frac{|\:0\:\rangle-|\:1\:\rangle}{\sqrt{2}}\rangle\mid b_{k-1}...b_{0}\rangle
+$$
+
+\noindent
+Combining terms where the k-th qubit is 0 together and terms where the kth-qubit is 1 together, we have:
+
+\begin{equation}
+\psi_H=\sum_{n} \frac{[\alpha(b_{N-1}...0...b_{0})+ \alpha(b_{N-1}...1...b_{0})]}{\sqrt{2}}\mid b_{N-1}...b_{k+1}\rangle\mid0\:\rangle\mid b_{k-1}...b_{0}\rangle
+\end{equation}
+
+$$
+\: + \:\:\sum_{n} \frac{ [\alpha(b_{N-1}...0...b_{0})- \alpha(b_{N-1}...1...b_{0})]}{\sqrt{2}}\mid b_{N-1}...b_{k+1}\rangle\mid1\:\rangle\mid b_{k-1}...b_{0}\rangle
+$$
+
+\noindent
+If we view a quantum logic operation as an iteration step, then the amplitudes at the next step (after the Hadamard gate) can be written in terms of the prior amplitudes. By comparing Equations (8) and (10), we see that the amplitudes have been transformed according to the following:
+
+\begin{equation}
+\alpha_{n+1}(b_{N-1}...b_k...b_0)=\frac{\alpha_{n}(b_{N-1}...0...b_{0})+(-1)^{b_k} \alpha_{n}(b_{N-1}...1...b_{0})}{\sqrt{2}}
+\end{equation}
+
+\noindent
+Using Equation (2) and (8), we see that the Phase gate operation on the k-th qubit would product the state:
+\begin{equation}
+\psi_S=\sum_{n} \alpha(b_{N-1}...0...b_{0})\mid b_{N-1}...b_{k+1}\rangle\mid0\:\rangle\mid b_{k-1}...b_{0}\rangle 
+\end{equation}
+$$
+\: + \:\:e^{ \frac{i\pi}{2}}\sum_{n} \alpha(b_{N-1}...1...b_{0})\mid b_{N-1}...b_{k+1}\rangle\mid1\:\rangle\mid b_{k-1}...b_{0}\rangle
+$$ 
+
+\noindent
+and so the associated amplitude transformation for the Phase gate operating on the k-th qubit is:
+\begin{equation}
+\alpha_{n+1}(b_{N-1}...b_k...b_0)=e^{ \frac{i\pi}{2} b_k}\alpha_{n}(b_{N-1}...b_k...b_0)
+\end{equation}
+
+\noindent
+The $\frac{\pi}{8}$-gate is very similar to the Phase gate, differing only in the phase factor, which
+results in the following amplitude transformation:
+\begin{equation}
+\alpha_{n+1}(b_{N-1}...b_k...b_0)=e^{ \frac{i\pi}{4} b_k}\alpha_{n}(b_{N-1}...b_k...b_0)
+\end{equation}
+ 
+
+\noindent
+From Equation (4), we see that the CNOT gate performs a 'basis-swapping' operation. Any basis vector where the (control, target) qubits = (1,0) gets replaced with the basis vector where these qubits have the values (1,1). Conversely, any basis vector where the (control, target) qubits = (1,1) get replaced with a basis vector where these qubits are (1,0). Since basis-vector swapping is equivalent to swapping the associated amplitudes, we see that the amplitude transformation for the CNOT gate operating on the $b_c$ and $b_t$ (control and target) qubits is:
+\begin{equation}
+\alpha_{n+1}(b_{N-1}...b_c...b_t...b_0)=\alpha_{n}(b_{N-1}...b_c...b_c\oplus b_t...b_0)
+\end{equation}
+
+\noindent
+The quantum logic operations and associated amplitude transformations (iterations) are summarized in the following table:
+
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|c|}
+\hline
+Hadamard Gate & $\alpha_{n+1}(b_{N-1}...b_k...b_0)=(1/\sqrt{2})[\alpha_{n}(b_{N-1}...0...b_{0})+(-1)^{b_k} \alpha_{n}(b_{N-1}...1...b_{0})]$\\
+\hline
+Phase Gate & $\alpha_{n+1}(b_{N-1}...b_k...b_0)=e^{ \frac{i\pi}{2} b_k}\alpha_{n}(b_{N-1}...b_k...b_0)$\\
+\hline
+$\frac{\pi}{8}$ Gate & $\alpha_{n+1}(b_{N-1}...b_k...b_0)=e^{ \frac{i\pi}{4} b_k}\alpha_{n}(b_{N-1}...b_k...b_0)$ \\
+\hline
+CNOT Gate & $\alpha_{n+1}(b_{N-1}...b_c...b_t...b_0)=\alpha_{n}(b_{N-1}...b_c...b_c\oplus b_t...b_0)$ \\
+\hline
+\end{tabular}
+\caption{Quantum Logic Operations and Associated Amplitude Recursion}
+\label{tab:template}
+\end{table}
+
+\noindent
+In order to perform quantum simulation using the recursion method, we would ideally like to represent the state of the system, 
+which in this case will be the amplitude function, with a polynomial number of classical memory resources and then find the maxima of the magnitude-squared of the amplitude function to find the the highest-probability eigenstates corresponding to the desired solution.
+\newline
+\newline
+\noindent
+The form of the recursion provides some insight into the subtle nature of quantum computation and suggests several scenarios
+on how we could use this representation to perform quantum simulation. From the Table 1 summary we can make the following observations:
+
+\newpage
+(1) The amplitude for a specific eigenstate (with fixed bitfield values) can be determined with polynomial classical memory 
+resources in polynomial time for any general quantum circuit. For fixed bit-fields, the amplitude at each step will be a complex-valued number and so the memory resources associated with the description of this number will not grow, for a fixed precision. Small quantum circuits can be simulated by computing this amplitude for all possible eigenstates and using this to compute probabilities.
+\newline
+\newline
+(2) The amplitude function for any network of Phase, $\frac{\pi}{8}$, and CNOT gates can be represented symbolically using a polynomial number of classical memory resources. A symbolic representation may be string-based or it could be any other encoding which captures the structure of recursion in Table 1. Even if the amplitude function is 'expanded' so that all terms for lower levels in the recursion are written out fully at the current level, the memory requirements remain polynomial for this sub-class of quantum circuits. If we assume the maxima of the magnitude-squared of the amplitude function can be found in polynomial time (using symbolic calculus and algebra), then the overall simulation could be done in polynomial time. From Table 1, we see that the description of the amplitude function grows linearly with the addition of any of these gates. For the Phase and $\frac{\pi}{8}$ gates, only a small number of bits are required to represent the addition of the phase factors to the amplitude function. For the CNOT gates, the target qubit gets replaced with an XOR of the control and target qubits that this adds only a small number of bits to the description of the amplitude function. 
+\noindent
+\newline
+\newline
+The Hadamard gate presents a challenge, as the symbolic description of the amplitude function approximately doubles with each iteration step in the general case (see Table 1) and this implies exponential classical memory requirements. This will not be true in all cases, however, and optimization of the recursion will be considered in the next section. One special case where the Hadamard gate does not present a problem is the generation of the initial superposition, i.e. when an initial state of $|0\rangle$ for all qubits is transformed to a superposition of all basis states with amplitude equal to $\frac{1}{\sqrt{2}^N}$ where N is the number of qubits. This actually corresponds to the simplest possible state in the recursion method, where the amplitude function is a constant. 
+\newline
+\newline
+(3) A trade-off between memory resources and generality of the input states can be made at any step in the iteration. In other words, if we find that memory resources become limited at a particular step of the iteration, we can start to fix bitfields or functions of bitfields, e.g. XORs of bitfields in order to collapse the representation of the amplitude function into a smaller memory space. This is an interesting feature of the recursive method.  
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Optimizing the Recursion}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+\noindent
+In the previous section we saw that the Hadamard gate creates a requirement for exponential memory resources in the general case when the recursion terms are written out fully and brought up to the current iteration level, i.e when the recursion is 'expanded'. There are some special cases where the Hadamard operation can be optimized. An important role of the quantum simulation compiler would be to identify these (and other) special cases that allow for optimization. The following summarizes some of the straightforward optimizations:
+\newline
+\newline
+(1) The Hadamard operation can be simplified if the amplitude function is quasi-separable, i.e. can be written as a product where at least one of the factors is independent of the bit-field the Hadamard is operating on. When this is the case, the independent portion can be factored out and so the Hadamard gate only operates on the bit-field dependent factor, resulting in a shorter description required for the resulting amplitude function. For example, consider a Hadamard operation on the k-th qubit where the first $\alpha_1$ factor is independent of the k-th bit-field:
+\newline
+\newline
+\begin{equation}
+\alpha(b_N ... b_k ...b_0)  = \alpha_1(b_N ... b_m)\alpha_2(... b_k ...)
+\end{equation}
+\begin{equation}
+H_k[{\alpha}] =  \alpha_1(b_N ... b_m) [\alpha_2(...0...) + (-1)^{b_k} \alpha_2(... 1 ... )]
+\end{equation} \newline
+
+
+(2) The overall simulation can be optimized for memory resources by fixing bit-fields at the expense of reducing generality, as noted in Observation(3). This allows classes of input states to be explored while simplifying the amplitude function. The following simple example illustrates this type of optimization:
+\newline
+\newline
+
+%\begin{figure} 
+%\centering
+\includegraphics [width=120mm]{QuantumCircuitExample1.png}
+%\label{Example Quantum Circuit}
+%\end{figure} 
+
+\noindent
+The initial Hadamard gates generate all possible 3-bit basis states with equal probability and amplitude $\alpha_1= \frac{1}{2 \sqrt{2}}$. The subsequent gates transform this constant state according to Table 1. Using the recursion method, the amplitude at each stage in the quantum circuit is calculated as follows:
+\newpage
+%\begin{equation}
+%\alpha_1  = \frac{1}{2 \sqrt{2}}
+%\end{equation}
+\begin{equation}
+\alpha_2  = \alpha_1 e^{i \frac{\pi}{2} b_1}
+\end{equation}
+\begin{equation}
+\alpha_3  = \alpha_1 e^{i \frac{\pi}{2} b_0\oplus b_1}
+\end{equation}
+\begin{equation}
+\alpha_4  = \alpha_1 e^{i \frac{\pi}{2} b_0\oplus b_1\oplus b_2}
+\end{equation}
+\begin{equation}
+\alpha_5  = \alpha_1 [ e^{i \frac{\pi}{2} b_0\oplus b_2} + (-1)^{b_1} e^{i \frac{\pi}{2} \overline{b_0\oplus b_2}}   ]
+\end{equation}
+
+\noindent
+If we impose the constraint $b_0\oplus b_2=0$ then we have imposed the parity constraint that both bits are equal. For this class of input states, the amplitude function would reduce to:
+
+\begin{equation}
+\alpha_5'  = \alpha_1 [ 1+(-1)^{b_1} e^{i \frac{\pi}{2} } ]
+\end{equation}
+
+\noindent
+and so the generality of the input space has been traded for a more compact amplitude representation. It is worth noting that long XOR sequences provide a good optimization opportunity since fixing the value of a long XOR sequence imposes only a mild contraint (parity over many bits) while simultaneously simplifying the amplitude function significantly.\newline
+\newline
+\noindent
+(3) A time-space tradeoff can be made by leaving some terms in the recursion in their unexpanded form. For the case of the Hadamard operation, this can save memory resources at the expense of more computation. For example, consider $\alpha_5$ rewritten such that it refers to level 4 of the recursion:
+
+\begin{equation}
+\alpha_5''  = \alpha_4 (b_0,0,b_2) + (-1)^{b_1}\alpha_4 (b_0,1,b_2)
+\end{equation}
+
+\noindent
+This representation will in general be more compact than the expanded form (Equation (21)), but would require two evaluations of $\alpha_4$ in any type of calculation involving the amplitude function. \newline
+\newline
+\noindent
+(4) Bitfield constraints can be generalized to include continuous values. One method for quantum simulation would be to utilize a continuous-valued amplitude function and to perform some type of gradient search or genetic algorithm search by fixing specific bit-fields and moving continuously through other bit-fields to search for maxima of the magnitude-squared of the amplitude function. The boolean-valued bitfields would simply be replaced with continuous variables and the XOR generalized to accept continuous values, i.e. $XOR(x,y)=x(1-y)+y(1-x)$. It would be interesting to see how well this type of algorithm would scale up when the number of qubits is large.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Summary}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+The proposed method views quantum computation as a recursion and provides a simple framework for quantum simulation. This approach could be useful in exploring the boundary between quantum and classical computation since it provides a great deal of flexibility in trading off computational resources and generality of the input states through the use of constraints. This framework also identifies the action of the Hadamard gate as being an important component in classical non-computability of the quantum computation in the general case due to the memory requirements needed to represent the amplitude function. Quantum circuit topologies where the description of the amplitude function is compressible will be amenable to classical simulation.
+
+
+
+%%
+%%  To put mathematics in a line it is put between dollor signs.  That
+%%  is $(x+y)^2=x^2+2xy+y^2$
+%%
+
+%Anyone caught using formulas such as $\sqrt{x+y}=\sqrt{x}+\sqrt{y}$ 
+%or $\frac{1}{x+y}=\frac{1}{x}+\frac{1}{y}$ will fail.
+
+%%
+%%% Displayed mathematics is put between double dollar signs.  
+%%
+
+%The binomial theorem is
+%$$
+%(x+y)^n=\sum_{k=0}^n\binom{n}{k}x^ky^{n-k}.
+%$$
+%A favorite sum of most mathematicians is
+%$$
+%\sum_{n=1}^\infty \frac{1}{n^2}=\frac{\pi^2}{6}.
+%$$
+%Likewise a popular integral is
+%$$
+%\int_{-\infty}^\infty e^{-x^2}\,dx=\sqrt{\pi}
+%$$
+
+
+%%
+%% A Theorem is stated by
+%%
+
+%\begin{thm} The square of any real number is non-negative.
+%\end{thm}
+
+%%
+%% Its proof is set off by
+%% 
+
+%\begin{proof}
+%Any real number $x$ satisfies $x>0$, $x=0$, or $x<0$.
+%If $x=0$, then $x^2=0\ge 0$.  If $x>0$ then as a positive time a
+%positive is positive we have $x^2=xx>0$.  If $x<0$ then $-x>0$ and so
+%by what we have just done $x^2=(-x)^2>0$.  So in all cases $x^2\ge0$.
+%\end{proof}
+
+
+%%
+%% A new section is started as follows:
+%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section{Introduction}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%This is a new section.
+
+%%
+%% A subsection is started by
+%%
+
+%\subsection{Things that need to be done.}
+%Prove theorems.
+
+
+
+\end{document}
+
