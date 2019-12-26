@@ -174,7 +174,7 @@
 %%%
 
 \begin{abstract}
-A novel method for SAT-solving is presented which uses sets of orthogonal and non-orthogonal binary sequences to encode Boolean variables. SAT statements are encoded into arithmetic operations on sequences--each logic clause is encoded into waveforms which are multiplied (AND-ed) together to encode a the logic statement in conjunctive normal form (CNF).  The binary sequences are designed to detect when logic conflict conditions occur for each variable and force the output to zero for each term where this occurs by utilizing orthogonality. Satisfiability can be determined based on whether the output sequence is non-zero (SAT) or zero (UNSAT) over all samples. Encoding the logic statement into a discrete waveform eliminates the need for an explicit expansion of the statement while still producing a discernable result. The SAT solutions can be found in polynomial time and space complexity using this method.
+A novel method for SAT-solving is presented which uses sets of orthogonal and non-orthogonal binary sequences to encode Boolean variables. SAT statements are encoded into arithmetic operations on sequences--each logic variable is encoded into waveforms which are multiplied (AND-ed) together to encode a the logic statement in conjunctive normal form (CNF).  The binary sequences are designed to detect when logic conflict conditions occur for each variable and force the output to zero for each term where this occurs by utilizing orthogonality. Satisfiability can be determined based on whether the output sequence is non-zero (SAT) or zero (UNSAT) over all samples. Encoding the logic statement into a discrete waveform eliminates the need for an explicit expansion of the statement while still producing a discernable result. The SAT solutions can be found in polynomial time complexity using this method.
 
 \end{abstract}
 
@@ -201,16 +201,14 @@ A novel method for SAT-solving is presented which uses sets of orthogonal and no
 \section{Introduction}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \noindent
-The proposed method was inspired by waveform-based logic approaches including Noise-based Logic (NBL), Sinusoidal Logic, and also quantum computing. The new method has an important difference, which is that no attempt is made to encode all possible logic minterms into unique basis functions. In NBL-SAT, unique basis functions can be constructed for each minterm, but this requires long correlation times when solving a high-dimensional problem. Sinusoidal Logic is limited by the number of basis functions available and so suffers from basis degeneracy. The proposed method does not suffer from these limitations since the orthogonal binary sequences are used only to detect logic conflicts and force the corresponding output to zero in these cases, and so the constraints on the associated sequences are manageable
+The proposed method is inspired by waveform-based logic approaches including Noise-based Logic (NBL), Sinusoidal Logic, and also quantum computing. The new method has an important difference, which is that no attempt is made to encode all possible logic minterms into unique basis functions. In NBL-SAT, unique basis functions can be constructed for each minterm, but this requires long correlation times when solving a high-dimensional problem. Sinusoidal Logic is limited by the number of basis functions available and so suffers from basis degeneracy. The proposed method does not suffer from these limitations since the orthogonal binary sequences are used only to detect logic conflicts and force the corresponding output to zero in these cases, and so the constraints on the associated sequences are manageable.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Boolean Satisfiability(SAT)}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Given a logic statement in conjunctive normal form (CNF), the objective of SAT to to determine if there is an assignment of the boolean variables which satisifies the statement(i.e. makes it evaulate to TRUE). SAT is an NP-complete problem with no known polynomial time solution.  
-\newline
 \noindent
-Consider the following statement:
+Given a logic statement in conjunctive normal form (CNF), the objective of SAT to to determine if there is an assignment of the boolean variables which satisifies the statement(i.e. makes it evaulate to TRUE). SAT is an NP-complete problem with no known polynomial time solution.  Consider the following statement:
 
 \begin{equation}
 y = (x_1\vee \overline{x_2})\wedge (\overline{x_1}\vee \overline{x_2})\wedge x_2
@@ -239,8 +237,7 @@ rules: \newline\newline
 \newline
 \noindent
 This encoding effectively forces any term of the form $X_i(n) \cdot \overline{X_i}(n)$ to be zero, regardless
-of whatever else it is multiplied with. Terms of the form $X_i(n) \cdot X_j(n), i \neq j$ and 
-$X_i(n) \cdot \overline{X_j}(n), i \neq j$ provide non-zero contribution to any product term they are contained within.
+of whatever else it is multiplied with, since the Hadamard (element-wise) product is associative and distributive. Terms of the form $X_i(n) \cdot X_j(n), i \neq j$ and $X_i(n) \cdot \overline{X_j}(n), i \neq j$ are expected to provide non-zero contribution to any product term they are contained within, assuming the sequences are of sufficient length.
 As seen in later sections, this encoding will allow us to detect when all terms in the expansion have a conflict since this will result in an output sequence consisting entirely of zeros. Encoding the logic expression into a waveform eliminates the need for explicit 
 expansion of the statement but still produces a discernable result.
 \newline
@@ -279,11 +276,12 @@ for UNSAT statements. The output for SAT statements will result in at least 1 no
 in the output sequence.
 
 
-
+\pagebreak
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Summary}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
-TO DO
+\noindent
+A method for SAT-solving was presented utilizing discrete sequences to detect logic conflicts in an encoded form of a SAT problem in conjuctive normal form. This formulation relies on the associative and distributive properties of the Hadamard product and allows for polynomial time complexity since the solution can be computed without expanding the logic statement. The memory requirements do not scale as well due to the requirement that all sequences must have mutual overlap except for the sequence encoding a variable and its complement (which must be orthogona)l, and this requires the use of long seqences to maintain overlap for products of many variables. Future work may include relaxing the element-wise orthogonality constraint and move toward general orthogonality to improve memory scaleability.
 
 
 
