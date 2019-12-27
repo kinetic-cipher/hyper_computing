@@ -269,33 +269,20 @@ $\left \langle  \Psi, \Phi _T  \right \rangle $, then the entire search process 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Computational Complexity}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
-The complexity will be estimated by counting the number of complex-valued operations, assuming all operations are approximately the same with respect to performance (as may be the cause for a native GPU implementation). For each sample $n$, The first product-term in Equation (1)requires $N$ complex exponentiations and $N-1$ complex additions. The second product term can re-use the sum-of-exponentials result from the first term, so it only requires one additional addition operation per sample (L operations). To complete the superposition requires the exponentiation of the second term (L operations) and then a multiplication of the two product terms (L operations). Therefore, construction of the superposition in Equation (1) requires $N_1 = (2N-1)\cdot L + 3L$ complex-valued operations. Calculating the inner product from Equation (2) requires $L$ complex multiplications and $L-1$ complex additions for a total of $N_p = 2L - 1$ operations. The total number of complex-valued operations required to construct the initial superposition and compute the inner product against the target sinusoid represents the number of operations required for a Yes/No decision of satisifiability:
+The construction of a superposition of N basis functions of length L samples corresponding to all possible results for a single choice requires $O(L\cdot N)$ operations (see Eq 3).  The overall search does this for each of the N choices using a binary search to successively narrow the range of summation until a unique solution is found. In section 3, we observed that the entire search process can be completed in $N\cdot log(N)$ calls to $search()$. During the search() call, the creation of the superposition requires up to $O(L\cdot N)$ since we can do one factor at a time and the inner product operation in the oracle requires $O(L)$ operations. Therefore the total number of operations for entire search process, i.e the solution of the problem in on the order of:
 
 \begin{equation}
-N_i = (2N-1)L + 3L + (2L - 1) = 2NL + 4L -1 =O(N \cdot L)
-\end{equation}
-
-The $seach()$ routine requires independent control of each factor, however the overall product can be updated one factor at a time (see Eq 3). There are $N$ complex exponentiations and $N$ complex additions for each factor. This updated factor must be integrated into the overall product by a point-wise (sample-by-sample) multiplication which requires L complex multiplications. The factor representing the unrestricted choices must be modified by updating the exponent for each sample (L operations) and integrating this into the overall result by performing point-wise multiplication (L operations). Therefore the superposition update requires $ 2NL + 3L$ operations. The oracle function inner product requires an additional $2L-1$ operations. The complexity of $search()$ is therefore:
-
-\begin{equation}
-N_s = 2NL + 5L - 1 = O(N \cdot L)
-\end{equation}
-
-\noindent
-In section 3, we observed that the entire search process can be completed in $N\cdot log(N)$ calls to $search()$. Therefore the total number of operations for entire search process, i.e the solution of the problem in on the order of:
-
-\begin{equation}
-N_T= O( L \cdot N \cdot N \cdot log(N) ) = O( L \cdot N^2 \cdot log(N) )
+N_T = O( (L \cdot N + L) \cdot N\cdot log(N) )
 \end{equation}
 \noindent
 The complexity is polynomial in $N$, the number of set elements and $L$, the number of samples used to represent the basis functions. However, $L = 2M$ and so depends on the maximum sum magnitude $M$, and this makes it dependent on the size of the input elements in set A. The input values are exponential in the number of bits, and so the overall search algorithm has pseudo-polynomial complexity.
 
 
-
+\newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Summary}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
-A new method for solving a subset-sum problem variant in pseudo-polynomial time was presented which was inspired by quantum computing and other waveform-based logic schemes. The interesting aspect of the approach is mainly in how it solves the optimization problem, by holding all possible solutions in superposition, which allows a systematic reduction of the search space. This method also relies heavily on vector operations such as inner product, which can easily be performed in parallel. This type of approach may find applications for optimization problems where a minimum set of assumptions can be made for the input space and a high degree of parallelism is desired.
+A new method for solving a subset-sum problem variant in pseudo-polynomial time was presented which was inspired by quantum computing and other waveform-based logic schemes. The interesting aspect of the approach is mainly in how it solves the optimization problem, by holding all possible solutions in superposition, which allows a systematic reduction of the search space. This method also relies heavily on vector operations such as inner product, which can easily be performed in parallel.
 
 
 
