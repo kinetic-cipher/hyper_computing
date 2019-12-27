@@ -300,8 +300,7 @@ The state of a quantum computation at any time is given by the wavefunction, whi
 
 \noindent
 where each index has the binary representation: $n = \sum_{i=0}^{N-1} b_{i} 2^{i}$.
-If we perform a Hadamard operation on the k-th qubit, the amplitude function will be transformed. Prior to this operation, 
-we note that the wavefunction sum can be partitioned into two components, one where the k-th qubit happens to be 0 and another where it happens to be 1. 
+If we perform a Hadamard operation on the k-th qubit, the amplitude function will be transformed. Prior to this operation, we note that the wavefunction sum can be partitioned into two components, one where the k-th qubit happens to be 0 and another where it happens to be 1. 
 Therefore the wavefunction can equivalently be written as:
 
 \begin{equation}
@@ -391,8 +390,7 @@ CNOT Gate & $\alpha_{n+1}(b_{N-1}...b_c...b_t...b_0)=\alpha_{n}(b_{N-1}...b_c...
 \end{table}
 
 \noindent
-In order to perform quantum simulation using the recursion method, we would ideally like to represent the state of the system, 
-which in this case will be the amplitude function, with a polynomial number of classical memory resources and then find the maxima of the magnitude-squared of the amplitude function to find the the highest-probability eigenstates corresponding to the desired solution.
+In order to perform quantum simulation using the recursion method, we would ideally like to represent the state of the system, which in this case will be the amplitude function, with a polynomial number of classical memory resources and then find the maxima of the magnitude-squared of the amplitude function to find the the highest-probability eigenstates corresponding to the desired solution.
 \newline
 \newline
 \noindent
@@ -400,25 +398,24 @@ The form of the recursion provides some insight into the subtle nature of quantu
 on how we could use this representation to perform quantum simulation. From the Table 1 summary we can make the following observations:
 
 \newpage
-(1) The amplitude for a specific eigenstate (with fixed bitfield values) can be determined with polynomial classical memory 
-resources in polynomial time for any general quantum circuit. For fixed bit-fields, the amplitude at each step will be a complex-valued number and so the memory resources associated with the description of this number will not grow, for a fixed precision. Small quantum circuits can be simulated by computing this amplitude for all possible eigenstates and using this to compute probabilities.
+(1) The amplitude for a specific eigenstate (with fixed bitfield values) can be determined with a polynomial number of classical memory resources (when expressions are not expanded) and for some cases in polynomial time, depending on the topology of the quantum circuit.  Small quantum circuits can be simulated by computing this amplitude for all possible eigenstates and using this to compute probabilities.
 \newline
 \newline
-(2) The amplitude function for any network of Phase, $\frac{\pi}{8}$, and CNOT gates can be represented symbolically using a polynomial number of classical memory resources. A symbolic representation may be string-based or it could be any other encoding which captures the structure of recursion in Table 1. Even if the amplitude function is 'expanded' so that all terms for lower levels in the recursion are written out fully at the current level, the memory requirements remain polynomial for this sub-class of quantum circuits. If we assume the maxima of the magnitude-squared of the amplitude function can be found in polynomial time (using symbolic calculus and algebra), then the overall simulation could be done in polynomial time. From Table 1, we see that the description of the amplitude function grows linearly with the addition of any of these gates. For the Phase and $\frac{\pi}{8}$ gates, only a small number of bits are required to represent the addition of the phase factors to the amplitude function. For the CNOT gates, the target qubit gets replaced with an XOR of the control and target qubits that this adds only a small number of bits to the description of the amplitude function. 
+(2) The amplitude function for any network of Phase, $\frac{\pi}{8}$, and CNOT gates can be represented symbolically using a polynomial number of classical memory resources. A symbolic representation could be any encoding which captures the structure of the recursion in Table 1. Even if the amplitude function is 'expanded' so that all terms for lower levels in the recursion are written out fully at the current level, the memory requirements remain polynomial for this sub-class of quantum circuits. If we assume the maxima of the magnitude-squared of the amplitude function can be found in polynomial time, then the overall simulation could be done in polynomial time. From Table 1, we see that the description of the amplitude function grows linearly with the addition of any of these gates. For the Phase and $\frac{\pi}{8}$ gates, only a small number of bits are required to represent the addition of the phase factors to the amplitude function. For the CNOT gates, the target qubit gets replaced with an XOR of the control and target qubits that this adds only a small number of bits to the description of the amplitude function. 
 \noindent
 \newline
 \newline
-The Hadamard gate presents a challenge, as the symbolic description of the amplitude function approximately doubles with each iteration step in the general case (see Table 1) and this implies exponential classical memory requirements. This will not be true in all cases, however, and optimization of the recursion will be considered in the next section. One special case where the Hadamard gate does not present a problem is the generation of the initial superposition, i.e. when an initial state of $|0\rangle$ for all qubits is transformed to a superposition of all basis states with amplitude equal to $\frac{1}{\sqrt{2}^N}$ where N is the number of qubits. This actually corresponds to the simplest possible state in the recursion method, where the amplitude function is a constant. 
+(3) The Hadamard gate presents a challenge, as the symbolic description of the amplitude function approximately doubles with each iteration step in the general case since there are two terms in the Hadamard operation which must be represented/computed from the lower levels of recursion. If the expressions are not expanded the computation can be described with polynomial memory resources but is not polynomial in time due to having two calls in each branch of the recursion. This will not be true in all cases, however, and optimization of the recursion will be considered in the next section. One special case where the Hadamard gate does not present a problem is the generation of the initial superposition, i.e. when an initial state of $|0\rangle$ for all qubits is transformed to a superposition of all basis states with amplitude equal to $\frac{1}{\sqrt{2}^N}$ where N is the number of qubits. This actually corresponds to the simplest possible state in the recursion method, where the amplitude function is a constant. 
 \newline
 \newline
-(3) A trade-off between memory resources and generality of the input states can be made at any step in the iteration. In other words, if we find that memory resources become limited at a particular step of the iteration, we can start to fix bitfields or functions of bitfields, e.g. XORs of bitfields in order to collapse the representation of the amplitude function into a smaller memory space. This is an interesting feature of the recursive method.  
+(4) A trade-off between memory resources and generality of the input states can be made at any step in the iteration. In other words, if we find that memory resources become limited at a particular step of the iteration, we can start to fix bitfields or functions of bitfields, e.g. XORs of bitfields in order to collapse the representation of the amplitude function into a smaller memory space. This is an interesting feature of the recursive method.  
 
 \newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Optimizing the Recursion}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 \noindent
-In the previous section we saw that the Hadamard gate creates a requirement for exponential memory resources in the general case when the recursion terms are written out fully and brought up to the current iteration level, i.e when the recursion is 'expanded'. There are some special cases where the Hadamard operation can be optimized. An important role of the quantum simulation compiler would be to identify these (and other) special cases that allow for optimization. The following summarizes some of the straightforward optimizations:
+In the previous section we saw that the Hadamard gate creates a requirement for exponential memory resources in the general case when the recursion terms are written out fully and brought up to the current iteration level, i.e when the recursion is 'expanded'.  When the computation is not expanded (written in recursive form), it requires only polynomial memory resources but then results in exponential time complexity due to the multiple calls to lower levels to implement the two terms present in the Hadamard operation in each branch of the recursion. There are some special cases where the Hadamard operation can be optimized. An important role of the quantum simulation compiler would be to identify these (and other) special cases that allow for optimization. The following summarizes some of the straightforward optimizations:
 \newline
 \newline
 (1) The Hadamard operation can be simplified if the amplitude function is quasi-separable, i.e. can be written as a product where at least one of the factors is independent of the bit-field the Hadamard is operating on. When this is the case, the independent portion can be factored out and so the Hadamard gate only operates on the bit-field dependent factor, resulting in a shorter description required for the resulting amplitude function. For example, consider a Hadamard operation on the k-th qubit where the first $\alpha_1$ factor is independent of the k-th bit-field:
@@ -488,7 +485,8 @@ This representation will in general be more compact than the expanded form (Equa
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Summary}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
-The proposed method views quantum computation as a recursion and provides a simple framework for quantum simulation. This approach could be useful in exploring the boundary between quantum and classical computation since it provides a great deal of flexibility in trading off computational resources and generality of the input states through the use of constraints. This framework also identifies the action of the Hadamard gate as being an important component in classical non-computability of the quantum computation in the general case due to the memory requirements needed to represent the amplitude function. Quantum circuit topologies where the description of the amplitude function is compressible will be amenable to classical simulation.
+\noindent
+The proposed method views quantum computation as a recursion and provides a simple framework for quantum simulation as an alternative to a matrix-based approach. This approach could be useful in exploring the boundary between quantum and classical computation since it provides a great deal of flexibility in trading off computational resources and generality of the input states through the use of constraints. This framework also identifies the action of the Hadamard gate as being an important component in classical non-computability of the quantum computation in the general case. Quantum circuit topologies where the description of the amplitude function is compressible will be amenable to classical simulation.
 
 
 
