@@ -441,7 +441,7 @@ H_k[{\alpha}] =  \alpha_1(b_N ... b_m) [\alpha_2(...0...) + (-1)^{b_k} \alpha_2(
 
 \noindent
 The initial Hadamard gates generate all possible 3-bit basis states with equal probability and amplitude $\alpha_1= \frac{1}{2 \sqrt{2}}$. The subsequent gates transform this constant state according to Table 1. Using the recursion method, the amplitude at each stage in the quantum circuit is calculated as follows:
-\newpage
+
 %\begin{equation}
 %\alpha_1  = \frac{1}{2 \sqrt{2}}
 %\end{equation}
@@ -482,6 +482,7 @@ This representation will in general be more compact than the expanded form (Equa
 (4) Bitfield constraints can be generalized to include continuous values. One method for quantum simulation would be to utilize a continuous-valued amplitude function and to perform some type of gradient search or genetic algorithm search by fixing specific bit-fields and moving continuously through other bit-fields to search for maxima of the magnitude-squared of the amplitude function. The boolean-valued bitfields would simply be replaced with continuous variables and the XOR generalized to accept continuous values, i.e. $XOR(x,y)=x(1-y)+y(1-x)$. It would be interesting to see how well this type of algorithm would scale up when the number of qubits is large.
 
 
+\newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Summary}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
