@@ -269,10 +269,10 @@ $\left \langle  \Psi, \Phi _T  \right \rangle $, then the entire search process 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Computational Complexity}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
-The construction of a superposition of N basis functions of length L samples corresponding to all possible results for a single choice requires $O(L\cdot N)$ operations (see Eq 3).  The overall search does this for each of the N choices using a binary search to successively narrow the range of summation until a unique solution is found. In section 3, we observed that the entire search process can be completed in $N\cdot log(N)$ calls to $search()$. During the search() call, the creation of the superposition requires up to $O(L\cdot N)$ operations since we can do one factor at a time, the product-of-superpositions requires $O(L)$ operations, and the inner product operation in the oracle requires $O(L)$ operations. Therefore the total number of operations for entire search process, i.e the solution of the problem in on the order of:
+The construction of a superposition of N basis functions of length L samples corresponding to all possible results for a single choice requires $O(L\cdot N)$ operations (see Eq 3).  The overall search does this for each of the N choices using a binary search to successively narrow the range of summation until a unique solution is found. In section 3, we observed that the entire search process can be completed in $N\cdot log(N)$ calls to $search()$. During the search() call, the creation of the superposition requires up to $O(L\cdot N)$ operations since we can operate on one factor at a time, the product-of-superpositions requires $(N-1)\cdot L$ operations, and the inner product operation in the oracle requires $L$ operations. Therefore the total number of operations for entire search process, i.e the solution of the problem in on the order of:
 
 \begin{equation}
-N_T = O( (L \cdot N + 2L) \cdot N\cdot log(N) )
+N_T = O( (L \cdot N + (N-1)\cdot L + L) \cdot N\cdot log(N) ) = O( L\cdot N^2 \cdot  log(N))
 \end{equation}
 \noindent
 The complexity is polynomial in $N$, the number of set elements and $L$, the number of samples used to represent the basis functions. However, $L = 2M$ and so depends on the maximum sum magnitude $M$, and this makes it dependent on the size of the input elements in set A. The input values are exponential in the number of bits, and so the overall search algorithm has pseudo-polynomial complexity.
