@@ -304,32 +304,32 @@ If we perform a Hadamard operation on the k-th qubit, the amplitude function wil
 Therefore the wavefunction can equivalently be written as:
 
 \begin{equation}
-\psi=\sum_{n} \alpha(b_{N-1}...0...b_{0})\mid b_{N-1}...b_{k+1}\rangle\mid0\:\rangle\mid b_{k-1}...b_{0}\rangle 
+\psi=\sum_{n'} \alpha(b_{N-1}...0...b_{0})\mid b_{N-1}...b_{k+1}\rangle\mid0\:\rangle\mid b_{k-1}...b_{0}\rangle 
 \end{equation}
 $$
-\: + \:\:\sum_{n} \alpha(b_{N-1}...1...b_{0})\mid b_{N-1}...b_{k+1}\rangle\mid1\:\rangle\mid b_{k-1}...b_{0}\rangle
+\: + \:\:\sum_{n'} \alpha(b_{N-1}...1...b_{0})\mid b_{N-1}...b_{k+1}\rangle\mid1\:\rangle\mid b_{k-1}...b_{0}\rangle
 $$
 
 \noindent
 After performing the Hadamard operation on the kth qubit, the state will be transformed to the following:
 
 \begin{equation}
-\psi_H=\sum_{n} \alpha(b_{N-1}...0...b_{0})\mid b_{N-1}...b_{k+1}\rangle\frac{|\:0\:\rangle+|\:1\:\rangle}{\sqrt{2}}\rangle\mid b_{k-1}...b_{0}\rangle 
+\psi_H=\sum_{n'} \alpha(b_{N-1}...0...b_{0})\mid b_{N-1}...b_{k+1}\rangle\frac{|\:0\:\rangle+|\:1\:\rangle}{\sqrt{2}}\rangle\mid b_{k-1}...b_{0}\rangle 
 \end{equation}
 
 $$
-\: + \:\:\sum_{n} \alpha(b_{N-1}...1...b_{0})\mid b_{N-1}...b_{k+1}\rangle\frac{|\:0\:\rangle-|\:1\:\rangle}{\sqrt{2}}\rangle\mid b_{k-1}...b_{0}\rangle
+\: + \:\:\sum_{n'} \alpha(b_{N-1}...1...b_{0})\mid b_{N-1}...b_{k+1}\rangle\frac{|\:0\:\rangle-|\:1\:\rangle}{\sqrt{2}}\rangle\mid b_{k-1}...b_{0}\rangle
 $$
 
 \noindent
 Combining terms where the k-th qubit is 0 together and terms where the kth-qubit is 1 together, we have:
 
 \begin{equation}
-\psi_H=\sum_{n} \frac{[\alpha(b_{N-1}...0...b_{0})+ \alpha(b_{N-1}...1...b_{0})]}{\sqrt{2}}\mid b_{N-1}...b_{k+1}\rangle\mid0\:\rangle\mid b_{k-1}...b_{0}\rangle
+\psi_H=\sum_{n'} \frac{[\alpha(b_{N-1}...0...b_{0})+ \alpha(b_{N-1}...1...b_{0})]}{\sqrt{2}}\mid b_{N-1}...b_{k+1}\rangle\mid0\:\rangle\mid b_{k-1}...b_{0}\rangle
 \end{equation}
 
 $$
-\: + \:\:\sum_{n} \frac{ [\alpha(b_{N-1}...0...b_{0})- \alpha(b_{N-1}...1...b_{0})]}{\sqrt{2}}\mid b_{N-1}...b_{k+1}\rangle\mid1\:\rangle\mid b_{k-1}...b_{0}\rangle
+\: + \:\:\sum_{n'} \frac{ [\alpha(b_{N-1}...0...b_{0})- \alpha(b_{N-1}...1...b_{0})]}{\sqrt{2}}\mid b_{N-1}...b_{k+1}\rangle\mid1\:\rangle\mid b_{k-1}...b_{0}\rangle
 $$
 
 \noindent
@@ -342,10 +342,10 @@ If we view a quantum logic operation as an iteration step, then the amplitudes a
 \noindent
 Using Equation (2) and (8), we see that the Phase gate operation on the k-th qubit would product the state:
 \begin{equation}
-\psi_S=\sum_{n} \alpha(b_{N-1}...0...b_{0})\mid b_{N-1}...b_{k+1}\rangle\mid0\:\rangle\mid b_{k-1}...b_{0}\rangle 
+\psi_S=\sum_{n'} \alpha(b_{N-1}...0...b_{0})\mid b_{N-1}...b_{k+1}\rangle\mid0\:\rangle\mid b_{k-1}...b_{0}\rangle 
 \end{equation}
 $$
-\: + \:\:e^{ \frac{i\pi}{2}}\sum_{n} \alpha(b_{N-1}...1...b_{0})\mid b_{N-1}...b_{k+1}\rangle\mid1\:\rangle\mid b_{k-1}...b_{0}\rangle
+\: + \:\:e^{ \frac{i\pi}{2}}\sum_{n'} \alpha(b_{N-1}...1...b_{0})\mid b_{N-1}...b_{k+1}\rangle\mid1\:\rangle\mid b_{k-1}...b_{0}\rangle
 $$ 
 
 \noindent
@@ -418,15 +418,13 @@ on how we could use this representation to perform quantum simulation. From the 
 In the previous section we saw that the Hadamard gate creates a requirement for exponential memory resources in the general case when the recursion terms are written out fully and brought up to the current iteration level, i.e when the recursion is 'expanded'.  When the computation is not expanded (written in recursive form), it requires only polynomial memory resources but then results in exponential time complexity due to the multiple calls to lower levels to implement the two terms present in the Hadamard operation in each branch of the recursion. There are some special cases where the Hadamard operation can be optimized. An important role of the quantum simulation compiler would be to identify these (and other) special cases that allow for optimization. The following summarizes some of the straightforward optimizations:
 \newline
 \newline
-(1) The Hadamard operation can be simplified if the amplitude function is quasi-separable, i.e. can be written as a product where at least one of the factors is independent of the bit-field the Hadamard is operating on. When this is the case, the independent portion can be factored out and so the Hadamard gate only operates on the bit-field dependent factor, resulting in a shorter description required for the resulting amplitude function. For example, consider a Hadamard operation on the k-th qubit where the first $\alpha_1$ factor is independent of the k-th bit-field:
+(1) The Hadamard operation can be simplified if the amplitude function at the previous level of recursion is symmetric with respect to $b_k$, the bit being operated on at the current level n, i.e. if $ \alpha_{n-1}(b_{N-1}...0...b_0) = \alpha_{n-1}(b_{N-1}...1...b_0)$. In this case, the nesting is transformed into a product instead and Eq. 11 can be re-written as:
 \newline
 \newline
 \begin{equation}
-\alpha(b_N ... b_k ...b_0)  = \alpha_1(b_N ... b_m)\alpha_2(... b_k ...)
+\alpha_n(b_N ... b_k ...b_0)  = (\frac{1}{\sqrt{2}} ) \alpha_{n-1}(b_N ... 0...b_m)[1+(-1)^{b_k}]
 \end{equation}
-\begin{equation}
-H_k[{\alpha}] =  \alpha_1(b_N ... b_m) [\alpha_2(...0...) + (-1)^{b_k} \alpha_2(... 1 ... )]
-\end{equation} \newline
+\newline
 
 
 (2) The overall simulation can be optimized for memory resources by fixing bit-fields at the expense of reducing generality, as noted in Observation(3). This allows classes of input states to be explored while simplifying the amplitude function. The following simple example illustrates this type of optimization:
