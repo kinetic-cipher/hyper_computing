@@ -333,7 +333,7 @@ $$
 $$
 
 \noindent
-If we view a quantum logic operation as an iteration step, then the amplitudes at the next step (after the Hadamard gate) can be written in terms of the prior amplitudes. By comparing Equations (8) and (10), we see that the amplitudes have been transformed according to the following:
+If we view a quantum logic operation as an iteration step, then the amplitudes at the next step (after the Hadamard gate) can be written in terms of the prior amplitudes. By comparing Equations (8) (9) and (10), we see that the amplitudes have been transformed according to the following:
 
 \begin{equation}
 \alpha_{n+1}(b_{N-1}...b_k...b_0)=\frac{\alpha_{n}(b_{N-1}...0...b_{0})+(-1)^{b_k} \alpha_{n}(b_{N-1}...1...b_{0})}{\sqrt{2}}
@@ -455,6 +455,7 @@ The initial Hadamard gates generate all possible 3-bit basis states with equal p
 \begin{equation}
 \alpha_5  = \alpha_1 [ e^{i \frac{\pi}{2} b_0\oplus b_2} + (-1)^{b_1} e^{i \frac{\pi}{2} \overline{b_0\oplus b_2}}   ]
 \end{equation}
+\newline
 
 \noindent
 If we impose the constraint $b_0\oplus b_2=0$ then we have imposed the parity constraint that both bits are equal. For this class of input states, the amplitude function would reduce to:
@@ -462,6 +463,7 @@ If we impose the constraint $b_0\oplus b_2=0$ then we have imposed the parity co
 \begin{equation}
 \alpha_5'  = \alpha_1 [ 1+(-1)^{b_1} e^{i \frac{\pi}{2} } ]
 \end{equation}
+\newline
 
 \noindent
 and so the generality of the input space has been traded for a more compact amplitude representation. It is worth noting that long XOR sequences provide a good optimization opportunity since fixing the value of a long XOR sequence imposes only a mild contraint (parity over many bits) while simultaneously simplifying the amplitude function significantly.\newline
@@ -472,9 +474,10 @@ and so the generality of the input space has been traded for a more compact ampl
 \begin{equation}
 \alpha_5''  = \alpha_4 (b_0,0,b_2) + (-1)^{b_1}\alpha_4 (b_0,1,b_2)
 \end{equation}
+\newline
 
 \noindent
-This representation will in general be more compact than the expanded form (Equation (21)), but would require two evaluations of $\alpha_4$ in any type of calculation involving the amplitude function. \newline
+This representation will in general be more compact than the expanded form (Equation (20)), but would require two evaluations of $\alpha_4$ in any type of calculation involving the amplitude function. \newline
 \newline
 \noindent
 (4) Bitfield constraints can be generalized to include continuous values. One method for quantum simulation would be to utilize a continuous-valued amplitude function and to perform some type of gradient search or genetic algorithm search by fixing specific bit-fields and moving continuously through other bit-fields to search for maxima of the magnitude-squared of the amplitude function. The boolean-valued bitfields would simply be replaced with continuous variables and the XOR generalized to accept continuous values, i.e. $XOR(x,y)=x(1-y)+y(1-x)$. It would be interesting to see how well this type of algorithm would scale up when the number of qubits is large.
